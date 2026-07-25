@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+/* ============================================================
+   UTSAVAM — design tokens
+   A Telugu-village celebration palette: paddy-field green,
+   turmeric gold, terracotta, and kumkum red — the colors of a
+   jatara or Sankranti fair rather than a wedding-hall interior.
+   Variable names are kept from the previous theme so components
+   don't need touching; only what they point to has changed.
+   ============================================================ */
+:root {
+  /* Color */
+  --maroon: #16301f;         /* deep paddy-field green background */
+  --maroon-soft: #1e4029;    /* card surface */
+  --maroon-softer: #28543a;  /* hover surface */
+  --ivory: #f7f0dd;          /* rice-paper text */
+  --ivory-dim: #c9bc97;      /* husk-toned secondary text */
+  --gold: #e0a438;           /* turmeric foil accent */
+  --gold-bright: #f0c066;    /* turmeric hover */
+  --marigold: #c1652e;       /* terracotta, primary CTA */
+  --rani: #963a2c;           /* kumkum red, secondary accent + tags */
+  --emerald: #5fae6e;        /* bright leaf green, success / open */
+  --line: rgba(247, 240, 221, 0.14);
+
+  /* Type */
+  --font-display: "Baloo Tamma 2", cursive;
+  --font-body: "Hind Guntur", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "Rajdhani", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ivory);
+  background: var(--maroon);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Textured backdrop: warm glows + a faint mandala linework, like
+   the gold block-print you find on the inside of a wedding card */
+body {
+  background-image:
+    radial-gradient(circle at 10% 6%, rgba(224, 164, 56, 0.14) 0%, transparent 40%),
+    radial-gradient(circle at 90% 14%, rgba(150, 58, 44, 0.14) 0%, transparent 42%),
+    radial-gradient(circle at 50% 100%, rgba(95, 174, 110, 0.10) 0%, transparent 55%),
+    repeating-radial-gradient(circle at 50% 50%, rgba(247, 240, 221, 0.025) 0, rgba(247, 240, 221, 0.025) 1px, transparent 1px, transparent 34px);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: var(--marigold);
+  color: var(--maroon);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--maroon);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--maroon-softer);
+  border-radius: 10px;
+  border: 2px solid var(--maroon);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold);
+}
+
+/* ============================================================
+   Signature element: invitation card frame
+   A double gold rule with a paisley (kalka) flourish at two
+   corners — the frame used on shubh vivah cards, restyled for
+   event tiles instead of a Western ticket stub.
+   ============================================================ */
+.invite-card {
+  position: relative;
+  border: 1px solid var(--line);
+  outline: 1px solid transparent;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+}
+.invite-card::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(224, 164, 56, 0.35);
+  border-radius: inherit;
+  pointer-events: none;
+  transition: border-color 0.35s ease;
+}
+.invite-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.65), 0 0 0 1px var(--gold);
+  border-color: var(--gold);
+}
+.invite-card:hover::before {
+  border-color: rgba(240, 192, 102, 0.6);
+}
+
+.motif {
+  color: var(--gold);
+  opacity: 0.85;
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+.invite-card:hover .motif {
+  opacity: 1;
+  transform: scale(1.06);
+}
+
+/* ============================================================
+   Marigold garland (toran) divider
+   ============================================================ */
+.garland-strip {
+  display: flex;
+  width: max-content;
+  align-items: flex-end;
+}
+
+/* ============================================================
+   Announcement ticker
+   ============================================================ */
+@keyframes ticker-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: ticker-scroll 30s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ticker-track,
+  .garland-sway {
+    animation: none;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ============================================================
+   Motion utilities
+   ============================================================ */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in {
+  animation: rise-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes diya-flicker {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.92); }
+}
+.diya {
+  animation: diya-flicker 1.8s ease-in-out infinite;
+}
+
+@keyframes garland-sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+.garland-sway {
+  transform-origin: top center;
+  animation: garland-sway 3.2s ease-in-out infinite;
+}
+
+.active-pop {
+  transition: transform 0.15s ease;
+}
+.active-pop:active {
+  transform: scale(0.96);
+}
+
+/* Underline-grow link hover, used in nav */
+.nav-link {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 2px;
+  width: 0%;
+  background: var(--gold);
+  transition: width 0.25s ease;
+}
+.nav-link:hover::after,
+.nav-link.is-active::after {
+  width: 100%;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
